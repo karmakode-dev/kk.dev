@@ -1,7 +1,22 @@
+const themeToggle = document.querySelector(".theme-toggle");
 const menuToggle = document.querySelector(".menu-toggle");
 const siteNav = document.querySelector(".site-nav");
 const navLinks = document.querySelectorAll(".site-nav a");
-const revealItems = document.querySelectorAll(".reveal");
+
+function getTheme() {
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("kk-theme", theme);
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    setTheme(getTheme() === "dark" ? "light" : "dark");
+  });
+}
 
 if (menuToggle && siteNav) {
   menuToggle.addEventListener("click", () => {
@@ -18,19 +33,3 @@ navLinks.forEach((link) => {
     }
   });
 });
-
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  {
-    threshold: 0.16,
-  }
-);
-
-revealItems.forEach((item) => observer.observe(item));
